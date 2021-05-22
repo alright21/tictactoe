@@ -5,7 +5,7 @@ import "fmt"
 // constants used through the game
 const DIM = 9
 
-type board struct {
+type tictactoe struct {
 
 	grid [9]string
 	player1 player
@@ -20,51 +20,51 @@ type board struct {
 }
 
 
-func NewBoard() *board {
-	b := board{movesLeft: 9}
+func NewTicTacToe() *tictactoe {
+	t := tictactoe{movesLeft: 9}
 	for i:=0; i<DIM; i++ {
-		b.grid[i] = " "
+		t.grid[i] = " "
 	}
 
-	b.setUpPlayers()
+	t.setUpPlayers()
 
-	return &b
+	return &t
 }
-func (b *board) printBoard(){
+func (t *tictactoe) printBoard(){
 
 	for i:=0;i<3;i++{
 
 		fmt.Println("+-----+-----+-----+")
 		fmt.Println("|     |     |     |")
-		fmt.Printf("|  %s  |  %s  |  %s  |\n", b.grid[0+i*3],b.grid[1+i*3],b.grid[2+i*3])
+		fmt.Printf("|  %s  |  %s  |  %s  |\n", t.grid[0+i*3],t.grid[1+i*3],t.grid[2+i*3])
 		fmt.Println("|     |     |     |")
 	}
 	fmt.Println("+-----+-----+-----+")
 
 }
 
-func (b *board) setUpPlayers(){
+func (t *tictactoe) setUpPlayers(){
 	
-	b.player1 = player{name: "Player 1"}
-	b.player2 = player{name: "Player 2"}
+	t.player1 = player{name: "Player 1"}
+	t.player2 = player{name: "Player 2"}
 
-	b.player1.getSymbol()
-	b.player2.getSymbol()
+	t.player1.getSymbol()
+	t.player2.getSymbol()
 
-	b.activePlayer, b.waitingPlayer = &b.player1, &b.player2
+	t.activePlayer, t.waitingPlayer = &t.player1, &t.player2
 	
 }
 
-func (b *board) switchTurn() {
-	b.activePlayer, b.waitingPlayer = b.waitingPlayer, b.activePlayer
+func (t *tictactoe) switchTurn() {
+	t.activePlayer, t.waitingPlayer = t.waitingPlayer, t.activePlayer
 }
 
-func (b *board) playTurn(){
+func (t *tictactoe) playTurn(){
 
 	validTurn := false
 
 	for !validTurn {
-		fmt.Printf("[%s] Choose where to put your mark 1-9:\n", b.activePlayer.name)
+		fmt.Printf("[%s] Choose where to put your mark 1-9:\n", t.activePlayer.name)
 
 		var position int
 
@@ -74,56 +74,56 @@ func (b *board) playTurn(){
 		position -=1
 
 		if error != nil || (position < 0 || position > 8) {
-			fmt.Printf("[%s] Choose a number between 1 and 9\n", b.activePlayer.name)
+			fmt.Printf("[%s] Choose a number between 1 and 9\n", t.activePlayer.name)
 			continue
 		}
 		// check if the cell is already full
-		if b.grid[position] != " " {
-			fmt.Printf("[%s] Cell already full. Choose another one\n", b.activePlayer.name)
+		if t.grid[position] != " " {
+			fmt.Printf("[%s] Cell already full. Choose another one\n", t.activePlayer.name)
 			continue
 		}
 		// regular play	
-		b.grid[position] = b.activePlayer.symbol
+		t.grid[position] = t.activePlayer.symbol
 		validTurn = true
-		b.movesLeft-=1
+		t.movesLeft-=1
 	}
 }
 
-func (b *board) setWinner(symbol string){
+func (t *tictactoe) setWinner(symbol string){
 
-	if symbol == b.player1.symbol{
-		b.winner = &b.player1
+	if symbol == t.player1.symbol{
+		t.winner = &t.player1
 	}else{
-		b.winner = &b.player2
+		t.winner = &t.player2
 	}
 }
 
-func (b *board) checkWin() bool{
+func (t *tictactoe) checkWin() bool{
 
 	//check rows
 	for i:=0; i<3;  i++ {
-		if b.grid[0+i*3] != " " && b.grid[0+i*3] == b.grid[1+i*3] && b.grid[1+i*3] == b.grid[2+i*3]{
-			b.setWinner(b.grid[0+i*3])
+		if t.grid[0+i*3] != " " && t.grid[0+i*3] == t.grid[1+i*3] && t.grid[1+i*3] == t.grid[2+i*3]{
+			t.setWinner(t.grid[0+i*3])
 			return true
 		}
 	}
 
 	//check columns
 	for i:=0; i<3;  i++ {
-		if b.grid[i] != " " && b.grid[i] == b.grid[i+3] && b.grid[i+3] == b.grid[i+6]{
-			b.setWinner(b.grid[i])
+		if t.grid[i] != " " && t.grid[i] == t.grid[i+3] && t.grid[i+3] == t.grid[i+6]{
+			t.setWinner(t.grid[i])
 			return true
 		}
 	}
 
 	//check diagonals
-	if b.grid[0] != " " && b.grid[0] == b.grid[4] && b.grid[4] == b.grid[8]{
-		b.setWinner(b.grid[0])
+	if t.grid[0] != " " && t.grid[0] == t.grid[4] && t.grid[4] == t.grid[8]{
+		t.setWinner(t.grid[0])
 		return true
 	}
 
-	if b.grid[2] != " " && b.grid[2] == b.grid[4] && b.grid[4] == b.grid[6]{
-		b.setWinner(b.grid[2])
+	if t.grid[2] != " " && t.grid[2] == t.grid[4] && t.grid[4] == t.grid[6]{
+		t.setWinner(t.grid[2])
 		return true
 	}
 
@@ -156,19 +156,19 @@ func (p *player) getSymbol(){
 func main(){
 
 	
-	tictactoe := NewBoard()
+	game := NewTicTacToe()
 
-	for !tictactoe.checkWin() && tictactoe.movesLeft>0{
+	for !game.checkWin() && game.movesLeft>0{
 
-		tictactoe.printBoard()
-		tictactoe.playTurn()
-		tictactoe.switchTurn()
+		game.printBoard()
+		game.playTurn()
+		game.switchTurn()
 	}
 
-	tictactoe.printBoard()
+	game.printBoard()
 	// check if there is a winner
-	if tictactoe.winner != nil {
-		fmt.Printf("The winner is %s\n", tictactoe.winner.name)
+	if game.winner != nil {
+		fmt.Printf("The winner is %s\n", game.winner.name)
 	}else{
 		fmt.Println("The game is a draw")
 	}
