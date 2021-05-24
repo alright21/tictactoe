@@ -42,8 +42,8 @@ func (t *tictactoe) printBoard(){
 
 func (t *tictactoe) setUpPlayers(){
 	
-	t.player1 = player{name: "Player 1"}
-	t.player2 = player{name: "Player 2"}
+	t.player1 = player{name: "Player 1", symbol: "X"}
+	t.player2 = player{name: "Player 2", symbol: "O"}
 
 	t.player1.GetSymbol()
 	t.player2.GetSymbol()

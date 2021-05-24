@@ -14,7 +14,7 @@ func (p *player) GetSymbol(){
 	for !symbolAllowed {
 		fmt.Printf("Enter a character symbol for %s:", p.name)
 
-		fmt.Scan(&p.symbol)
+		fmt.Scanln(&p.symbol)
 
 		if(len(p.symbol)>1){
 			p.symbol = ""
