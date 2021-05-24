@@ -2,12 +2,13 @@ package main
 
 import "fmt"
 
-type player struct{
+// Player represents a player in Tictactoe game
+type Player struct{
 	name string
 	symbol string
 }
-
-func (p *player) GetSymbol(){
+// GetSymbol get the symbol for the tictactoe player
+func (p *Player) GetSymbol(){
 
 	symbolAllowed := false
 

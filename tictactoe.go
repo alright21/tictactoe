@@ -2,23 +2,24 @@ package main
 
 import "fmt"
 
-type tictactoe struct {
+// Tictactoe is a struct representing all the variables needed for the game
+type Tictactoe struct {
 
 	grid [9]string
-	player1 player
-	player2 player
+	player1 Player
+	player2 Player
 
-	activePlayer *player
-	waitingPlayer *player
+	activePlayer *Player
+	waitingPlayer *Player
 
-	winner *player
+	winner *Player
 
 	movesLeft int
 }
 
-
-func NewTicTacToe() *tictactoe {
-	t := tictactoe{movesLeft: 9}
+// NewTicTacToe returns a new tictactoe object for the game
+func NewTicTacToe() *Tictactoe {
+	t := Tictactoe{movesLeft: 9}
 	for i:=0; i<9; i++ {
 		t.grid[i] = " "
 	}
@@ -27,7 +28,7 @@ func NewTicTacToe() *tictactoe {
 
 	return &t
 }
-func (t *tictactoe) printBoard(){
+func (t *Tictactoe) printBoard(){
 
 	for i:=0;i<3;i++{
 
@@ -40,10 +41,10 @@ func (t *tictactoe) printBoard(){
 
 }
 
-func (t *tictactoe) setUpPlayers(){
+func (t *Tictactoe) setUpPlayers(){
 	
-	t.player1 = player{name: "Player 1", symbol: "X"}
-	t.player2 = player{name: "Player 2", symbol: "O"}
+	t.player1 = Player{name: "Player 1", symbol: "X"}
+	t.player2 = Player{name: "Player 2", symbol: "O"}
 
 	t.player1.GetSymbol()
 	t.player2.GetSymbol()
@@ -52,11 +53,11 @@ func (t *tictactoe) setUpPlayers(){
 	
 }
 
-func (t *tictactoe) switchTurn() {
+func (t *Tictactoe) switchTurn() {
 	t.activePlayer, t.waitingPlayer = t.waitingPlayer, t.activePlayer
 }
 
-func (t *tictactoe) playTurn(){
+func (t *Tictactoe) playTurn(){
 
 	validTurn := false
 
@@ -68,7 +69,7 @@ func (t *tictactoe) playTurn(){
 		_, error := fmt.Scan(&position)
 
 		// computer readable position
-		position -=1
+		position--
 
 		if error != nil || (position < 0 || position > 8) {
 			fmt.Printf("[%s] Choose a number between 1 and 9\n", t.activePlayer.name)
@@ -82,11 +83,11 @@ func (t *tictactoe) playTurn(){
 		// regular play	
 		t.grid[position] = t.activePlayer.symbol
 		validTurn = true
-		t.movesLeft-=1
+		t.movesLeft--
 	}
 }
 
-func (t *tictactoe) setWinner(symbol string){
+func (t *Tictactoe) setWinner(symbol string){
 
 	if symbol == t.player1.symbol{
 		t.winner = &t.player1
@@ -95,7 +96,7 @@ func (t *tictactoe) setWinner(symbol string){
 	}
 }
 
-func (t *tictactoe) checkWin() bool{
+func (t *Tictactoe) checkWin() bool{
 
 	//check rows
 	for i:=0; i<3;  i++ {

@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// constants used through the game
+// DIM represents the size of the Tictactoe grid
 const DIM = 9
 
 func main(){
